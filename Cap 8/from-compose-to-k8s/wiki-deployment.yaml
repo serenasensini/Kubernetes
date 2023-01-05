@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.27.0 (b0ed6a2c9)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wiki
+  name: wiki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wiki
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.27.0 (b0ed6a2c9)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: wiki
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: wiki
+            - name: DB_PASS
+              value: wikijsrocks
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_USER
+              value: wikijs
+          image: ghcr.io/requarks/wiki:2
+          name: wiki
+          ports:
+            - containerPort: 3000
+          resources: {}
+      restartPolicy: Always
+status: {}

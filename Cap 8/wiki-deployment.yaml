@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+      name: wiki
+  name: wiki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        name: wiki
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+          name: wiki
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: wiki
+            - name: DB_PASS
+              value: wikijsrocks
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_USER
+              value: wikijs
+          image: ghcr.io/requarks/wiki:2
+          name: wiki
+          ports:
+            - containerPort: 3000
+          resources: {}
+      restartPolicy: Always

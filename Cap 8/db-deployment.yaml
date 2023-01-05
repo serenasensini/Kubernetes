@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+      name: wiki
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        name: wiki
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+          name: wiki
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: wiki
+            - name: POSTGRES_PASSWORD
+              value: wikijsrocks
+            - name: POSTGRES_USER
+              value: wikijs
+          image: postgres:11-alpine
+          name: db
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: db-data
+      restartPolicy: Always
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-data

@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        com.docker.project: tutorial
+    name: tutorial
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.project: tutorial
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+              com.docker.project: tutorial
+        spec:
+            containers:
+            - image: docker/getting-started
+              name: tutorial
+              ports:
+              - containerPort: 80
+            restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tutorial
+spec:
+  ports:
+      - name: 80-tcp
+        port: 80
+        protocol: TCP
+        targetPort: 80
+  selector:
+    com.docker.project: tutorial
+  type: LoadBalancer
