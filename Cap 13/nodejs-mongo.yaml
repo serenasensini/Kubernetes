@@ -1,0 +1,111 @@
+# MongoDB Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  selector:
+    matchLabels:
+      app: mean-stack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mean-stack
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              readOnly: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mean-stack-data
+---
+# Server-Side (Backend) Container
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mean-stack
+spec:
+  selector:
+    matchLabels:
+      app: mean-stack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mean-stack
+    spec:
+      containers:
+        - name: application-backend
+          image: application-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5100
+          volumeMounts:
+            - name: server-data
+              mountPath: /data
+              readOnly: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mean-stack-data
+---
+# Client-Side (Frontend) Container
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mean-stack-client
+spec:
+  selector:
+    matchLabels:
+      app: mean-stack-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mean-stack-client
+    spec:
+      containers:
+        - name: application-frontend
+          image: application-frontend:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 443
+---
+# Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mean-stack-data
+  labels:
+    app: mean-stack
+spec:
+  accessModes:
+    - ReadWriteOnce
+resources:
+    requests:
+      storage: 50Gi
+---
+# MongoDB Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    app: mean-stack
+spec:
+  ports:
+    - name: mongo
+      port: 27017
+      targetPort: 27017
+  type: NodePort
+  selector:
+    app: mean-stack
