@@ -50,7 +50,7 @@ spec:
           ports:
             - containerPort: 5100
           volumeMounts:
-            - name: server-data
+            - name: data
               mountPath: /data
               readOnly: false
       volumes:
@@ -90,7 +90,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-resources:
+  resources:
     requests:
       storage: 50Gi
 ---
