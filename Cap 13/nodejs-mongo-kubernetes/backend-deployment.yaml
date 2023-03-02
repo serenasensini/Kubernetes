@@ -25,9 +25,10 @@ spec:
                 - curl
                 - -f
                 - http://localhost:8081/api/
-            failureThreshold: 5
+            failureThreshold: 3
             periodSeconds: 20
-            timeoutSeconds: 60
+            timeoutSeconds: 10
+            initialDelaySeconds: 30
           name: backend
           ports:
             - containerPort: 8081
