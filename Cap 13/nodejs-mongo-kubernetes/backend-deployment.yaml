@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend
+    spec:
+      containers:
+        - image: ssensini/mean-backend:1.0.0
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -f
+                - http://localhost:8081/api/
+            failureThreshold: 5
+            periodSeconds: 20
+            timeoutSeconds: 60
+          name: backend
+          ports:
+            - containerPort: 8081
+          resources: {}
+      restartPolicy: Always
+status: {}

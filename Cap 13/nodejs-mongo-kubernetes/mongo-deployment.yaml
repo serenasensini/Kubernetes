@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - args:
+            - mongod
+            - --port
+            - "27017"
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: mydb
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: root
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+          image: mongo:6.0.4
+          livenessProbe:
+            exec:
+              command:
+                - echo 'db.runCommand("ping").ok' | mongosh mongo:27017/mydb --quiet
+            failureThreshold: 5
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 20
+          name: mongo
+          ports:
+            - containerPort: 27017
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/db
+              name: dbdata
+      restartPolicy: Always
+      volumes:
+        - name: dbdata
+          persistentVolumeClaim:
+            claimName: dbdata
+status: {}
