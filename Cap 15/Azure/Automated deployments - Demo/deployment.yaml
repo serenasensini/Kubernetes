@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: flask-app
+    name: flask-app
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: flask-app
+    template:
+        metadata:
+            labels:
+                app: flask-app
+        spec:
+            containers:
+                - env:
+                      - name: APP_VERSION
+                        value: "1.0.0"
+                  image: ssensini/simple-flask-app
+                  name: flask-app
+                  ports:
+                      - containerPort: 5000
+                  resources: {}
+            restartPolicy: Always
+status: {}
