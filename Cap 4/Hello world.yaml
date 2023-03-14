@@ -35,5 +35,5 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    "com.docker.project": tutorial
+    com.docker.project: tutorial
   type: LoadBalancer
