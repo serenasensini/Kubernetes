@@ -1,0 +1,41 @@
+Definizione dello StatefulSet per MongoDB
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+  serviceName: "mongo"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:6.0.4
+          command:
+            - bash
+            - /config/init.sh
+          ports:
+            - containerPort: 27017
+              name: peer
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          livenessProbe:
+            exec:
+              command:
+              - /usr/bin/mongosh
+              - --eval
+              - db.serverStatus()
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: "mongo-init"
