@@ -1,0 +1,9 @@
+apiVersion: kube-green.com/v1alpha1
+kind: SleepInfo
+metadata:
+  name: esempio
+spec:
+  weekdays: "1-5"
+  sleepAt: "19:00"
+  wakeUpAt: "07:00"
+  timeZone: "Europe/Rome"

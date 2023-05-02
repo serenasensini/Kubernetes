@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rolebinding:app1-viewer
+  namespace: demo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: role:viewer
+subjects:
+  - kind: ServiceAccount
+    name: serviceaccount:app1
+    namespace: demo

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-server
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-server
+  template:
+    metadata:
+      labels:
+        app: nginx-server
+    spec:
+      volumes:
+        - name: common-disk
+          emptyDir: {}
+      initContainers:
+        - name: busybox
+          image: busybox
+          volumeMounts:
+            - name: common-disk
+              mountPath: /web-files
+          command: ["/bin/sh"]
+          args: ["-c", "echo '<h2>Init container added this line!</h2>' > /web-files/index.html && sleep 20"]
+      containers:
+        - image: nginx
+          name: nginx
+          volumeMounts:
+            - name: common-disk
+              mountPath: /usr/share/nginx/html

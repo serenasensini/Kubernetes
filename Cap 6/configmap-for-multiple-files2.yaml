@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: my-files
+data:
+  nginx.conf: >-
+    # The identifier Backend is internal to nginx, and used to name this specific upstream
+      upstream Backend {
+      # hello is the internal DNS name used by the backend Service inside Kubernetes
+      server dsp;
+    }
+      
+      server {
+      listen 80;
+      
+      location / {
+      # The following statement will proxy traffic to the upstream named Backend
+      proxy_pass http://Backend;
+    }
+    }
+  simple-text.txt: >-
+    Hello world!

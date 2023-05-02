@@ -1,0 +1,20 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: myconfigmap-files
+data:
+  locale.properties: |-
+    # ###################################################################
+    # Locale properties compliant with the standard Java i18n mechanism
+    #
+    # see https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html
+    # for extensive explanations
+    #
+    # the file provides default empty values for each property  
+    # ###################################################################
+    
+    language = @locale.properties.language@
+    
+    country = @locale.properties.country@
+    
+    variant = @locale.properties.variant@

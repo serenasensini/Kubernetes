@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: angular-webapp
+    name: angular-webapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: angular-webapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: angular-webapp
+    spec:
+      containers:
+      - image: docker.io/myuser/angular-node-webapp
+        name: webapp
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 3080
+

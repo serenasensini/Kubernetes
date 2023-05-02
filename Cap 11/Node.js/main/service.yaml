@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-webapp
+  labels:
+    run: angular-webapp
+spec:
+  ports:
+    - port: 3080
+      protocol: TCP
+  selector:
+    app: angular-webapp
+  type: NodePort

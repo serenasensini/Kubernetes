@@ -1,0 +1,32 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: batch-backup
+spec:
+  schedule: "0 */12 * * *"
+  jobTemplate:
+  spec:
+    template:
+      spec:
+        restartPolicy: OnFailure
+        containers:
+          - name: pgsql-backup
+            image: ssensini/pgsql-backup
+            env:
+              - name: PGHOST
+                value: "postgres"
+              - name: PGPORT
+                value: "5432"
+              - name: PGDATABASE
+                value: "postgres"
+              - name: PGUSER
+                value: "postgres"
+              - name: PGPASSWORD
+                value: "password"
+            volumeMounts:
+              - mountPath: "/pg_backup"
+                name: backup-volume
+        volumes:
+          - name: backup-volume
+            persistentVolumeClaim:
+              claimName: pg-backup-pvc

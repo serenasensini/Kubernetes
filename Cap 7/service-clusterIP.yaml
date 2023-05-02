@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  clusterIP: 10.100.71.132
+  clusterIPs:
+    - 10.100.71.132
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 443
+  selector:
+    app: my-app
+  sessionAffinity: None
+  type: ClusterIP

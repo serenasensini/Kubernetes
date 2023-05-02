@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+    - {key: stage, operator: In, values: [frontend, backend]}
+  template:
+    metadata:
+      labels:
+        app: my-webapp
+        stage: frontend

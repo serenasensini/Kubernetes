@@ -1,0 +1,5 @@
+commonLabels:
+  app: my-wordpress
+resources:
+  - deployment-wordpress.yaml
+  - service-wordpress.yaml
