@@ -13,3 +13,7 @@ funzionamento sono riportati all'interno del libro.
 **Disclaimer**: il codice è stato testato più volte ma, si sa, qualcosa sfugge sempre.
 
 Per refusi, aggiunte e modifiche a quanto presente, inviare segnalazione a info[at]theredcode.it
+
+# Contributors
+
+Si ringrazia Mauro Cicolella per la prefazione, e per il supporto fornito durante la stesura di questo manuale.
