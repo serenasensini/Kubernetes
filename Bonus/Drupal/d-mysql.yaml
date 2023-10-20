@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-creds
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              value: drupal-database
+          image: "mysql:5.7.8"
+          imagePullPolicy: IfNotPresent
+          name: mysql
+          ports:
+            - containerPort: 3306
+              name: mysql
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: drupal-pvc
+              subPath: dbdata
+      volumes:
+        - name: drupal-pvc
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+  selector:
+    matchLabels:
+      app: mysql

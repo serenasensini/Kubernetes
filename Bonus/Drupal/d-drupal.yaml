@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: drupal
+  name: drupal
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drupal
+    spec:
+      initContainers:
+        - name: init-sites-volume
+          imagePullPolicy: IfNotPresent
+          image: drupal:9.5.11
+          command: ['/bin/bash', '-c']
+          args: ['cp -r /var/www/html/sites/ /data/; chown www-data:www-data /data/ -R']
+          volumeMounts:
+            - mountPath: /data
+              name: pvc-drupal
+      containers:
+        - image: drupal:9.5.11
+          imagePullPolicy: IfNotPresent
+          name: drupal
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/www/html/modules
+              name: pvc-drupal
+              subPath: modules
+            - mountPath: /var/www/html/profiles
+              name: pvc-drupal
+              subPath: profiles
+            - mountPath: /var/www/html/sites
+              name: pvc-drupal
+              subPath: sites
+            - mountPath: /var/www/html/themes
+              name: pvc-drupal
+              subPath: themes
+
+      volumes:
+        - name: pvc-drupal
+          persistentVolumeClaim:
+            claimName: drupal-pvc
+
+  selector:
+    matchLabels:
+      app: drupal
