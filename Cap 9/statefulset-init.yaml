@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mongodb
-          image: mongo:6.0.4
+          image: mongo:8.0.11
           command:
           - mongod
           - --replSet
@@ -26,7 +26,7 @@ spec:
             - containerPort: 27017
               name: web
         - name: init-mongo
-          image: mongo:6.0.4
+          image: mongo:8.0.11
           command:
           - bash
           - /config/init.sh

@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: busybox
+	name: busybox
 spec:
-  containers:
+	containers:
 	- name: test-container
-  	image: gcr.io/google_containers/busybox
-  	command: [ "/bin/sh", "-c", "ls -la /etc/config" ]
-  	volumeMounts:
-  	- name: config-volume
-    	  mountPath: /etc/config
-  volumes:
-	- name: config-volume
-  	  configMap:
-    	    name: my-files
-  restartPolicy: Never
+	  image: gcr.io/google_containers/busybox
+	  command: [ "/bin/sh", "-c", "ls -la /etc/config" ]
+	  volumeMounts:
+	  	- name: config-volume
+	  	  mountPath: /etc/config
+	volumes:
+		- name: config-volume
+		  configMap:
+			  name: my-files
+	restartPolicy: Never

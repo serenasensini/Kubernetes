@@ -4,7 +4,6 @@ metadata:
   annotations:
     kompose.cmd: kompose convert
     kompose.version: 1.27.0 (b0ed6a2c9)
-  creationTimestamp: null
   labels:
     io.kompose.service: wiki
   name: wiki
@@ -43,4 +42,3 @@ spec:
             - containerPort: 3000
           resources: {}
       restartPolicy: Always
-status: {}

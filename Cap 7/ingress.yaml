@@ -1,9 +1,8 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: test-ingress
   namespace: dev
-
 spec:
   ingressClassName: nginx
   rules:
@@ -11,6 +10,9 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: my-service
-              servicePort: 80
+              service:
+                name: my-service
+                port:
+                  number: 80

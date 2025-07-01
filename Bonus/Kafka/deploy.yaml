@@ -1,0 +1,20 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kcat
+  labels:
+    app: kcat
+spec:
+  selector:
+    matchLabels:
+      app: kcat
+  template:
+    metadata:
+      labels:
+        app: kcat
+    spec:
+      containers:
+        - name: kafka-cat
+          image: confluentinc/cp-kafkacat:7.1.6
+          command: ["/bin/sh"]
+          args: ["-c", "trap : TERM INT; sleep infinity & wait"]
