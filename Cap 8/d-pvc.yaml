@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: ubuntu
-      replicas: 1
+  replicas: 1
   template:
     metadata:
       labels:
